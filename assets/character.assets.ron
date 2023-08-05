@@ -1,0 +1,18 @@
+({
+    "characters": Files (
+        paths: ["characters/skeleton.character.yaml"],
+    ),
+    "textures": Files (
+        paths: [
+            "textures/skeleton/attack.png",
+            "textures/skeleton/attack2.png",
+            "textures/skeleton/attack3.png",
+            "textures/skeleton/block.png",
+            "textures/skeleton/death.png",
+            "textures/skeleton/hit.png",
+            "textures/skeleton/idle.png",
+            "textures/skeleton/tiao.png",
+            "textures/skeleton/walk.png",
+        ],
+    ),
+})
