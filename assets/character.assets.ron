@@ -11,8 +11,10 @@
             "textures/skeleton/death.png",
             "textures/skeleton/hit.png",
             "textures/skeleton/idle.png",
-            "textures/skeleton/tiao.png",
+            "textures/skeleton/skyward.png",
             "textures/skeleton/walk.png",
+            "textures/skeleton/float.png",
+            "textures/skeleton/sprint.png",
         ],
     ),
 })

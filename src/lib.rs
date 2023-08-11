@@ -50,7 +50,10 @@ enum CharacterState {
     Idle,
     Walk,
     Action(String),
-    Hit,
+    Hit {
+        attack_action: String,
+        hit_action: String,
+    },
 }
 
 impl ToString for CharacterState {
@@ -58,7 +61,7 @@ impl ToString for CharacterState {
         match self {
             CharacterState::Idle => "idle".to_string(),
             CharacterState::Walk => "walk".to_string(),
-            CharacterState::Hit => "hit".to_string(),
+            CharacterState::Hit { attack_action, hit_action } => hit_action.to_string(),
             CharacterState::Action(action) => action.clone(),
         }
     }
@@ -66,12 +69,18 @@ impl ToString for CharacterState {
 
 #[derive(Event, Debug)]
 enum GameEvent {
-    Idle(u32),
-    Left(u32),
-    Right(u32),
-    Action(u32, String),
-    Stop(u32),
-    Hit(u32),
+    Idle(UID),
+    Left(UID),
+    Right(UID),
+    Action(UID, String),
+    Stop(UID),
+    Hit {
+        uid: UID,
+        direction: Direction,
+        attack_action: String,
+        hit_action: String,
+        impulse: Option<Vec2>,
+    },
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -116,6 +125,14 @@ pub struct AnimationTimer(pub Timer);
 pub struct Character {
     pub name: String,
     pub actions: HashMap<String, Action>,
+    pub commands: HashMap<CMD, String>,
+}
+
+#[derive(Eq, Hash, PartialEq, Deserialize, Serialize, Debug)]
+pub enum CMD{
+    J,
+    K,
+    I
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -125,6 +142,9 @@ pub struct Action {
     pub atlas: ActionAtlas,
     pub frames: Vec<ActionFrame>,
     pub next_action: Option<String>,
+    pub external_impulse: Option<Vec2>,
+    pub internal_impulse: Option<Vec2>,
+    pub hit_action: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -150,4 +170,19 @@ pub enum ActionStage {
     Startup,
     Active,
     Recovery,
+}
+
+#[derive(Resource, Deref, DerefMut, Debug)]
+pub struct OwnerUID(u32);
+
+#[derive(Resource, Deref, DerefMut, Debug)]
+pub struct OwnerCharacter(String);
+
+//
+// #[derive(Component, Deref, DerefMut, Debug)]
+// pub struct Velocity(f32);
+
+#[derive(Component)]
+struct Knockback {
+    velocity: Vec3,
 }
