@@ -1,5 +1,6 @@
 use bevy::math::vec2;
 use bevy::prelude::*;
+use bevy::render::view::RenderLayers;
 use bevy_rapier2d::prelude::*;
 
 use crate::{Direction, AnimationIndices, AnimationTimer, CharacterState, GameEvent, GameState, UID, Character, CharacterName, ActionStage, Hitbox, Hurtbox, Blockbox, Rectbox, OwnerUID, Action, OwnerCharacter, CMD};
@@ -39,7 +40,7 @@ fn setup(
     commands
         .spawn((
             Collider::cuboid(1000.0, 20.0),
-            TransformBundle::from(Transform::from_xyz(0.0, -100.0, 0.0)),
+            TransformBundle::from(Transform::from_xyz(0.0, -250.0, 0.0)),
             Restitution {
                 coefficient: 0.,
                 combine_rule: CoefficientCombineRule::Min,
@@ -78,7 +79,7 @@ fn create_character(commands: &mut Commands, texture_atlas: Handle<TextureAtlas>
         SpriteSheetBundle {
             texture_atlas,
             sprite: TextureAtlasSprite::new(0),
-            transform: Transform::from_xyz(0., 0., 0.),
+            transform: Transform::from_xyz(0., 0., 1.),
             ..default()
         },
         AnimationIndices { first: 0, last: action.frames.len() - 1, repeat: true },

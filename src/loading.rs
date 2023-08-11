@@ -1,5 +1,6 @@
 use crate::{Action, Character, CharacterState, GameState};
 use bevy::prelude::*;
+use bevy::render::view::RenderLayers;
 use bevy_asset_loader::prelude::*;
 use bevy_kira_audio::AudioSource;
 use bevy_common_assets::yaml::YamlAssetPlugin;
@@ -38,13 +39,23 @@ fn setup(
 }
 
 fn parsing_assets(
+    mut commands: Commands,
     character_asset_collection: Res<CharacterAssetCollection>,
     mut character_assets: ResMut<Assets<Character>>,
     mut texture_atlas_assets: ResMut<Assets<TextureAtlas>>,
     mut characters: ResMut<Characters>,
     mut characters_texture_atlas: ResMut<CharactersTextureAtlas>,
     mut next_state: ResMut<NextState<GameState>>,
+    texture_assets: Res<TextureAssets>,
 ) {
+    commands.spawn((
+        SpriteBundle {
+            texture: texture_assets.background.clone(),
+            transform: Transform::from_scale(Vec3::new(1., 1., 0.)),
+            ..Default::default()
+        },
+    ));
+
     for (name, handle) in character_asset_collection.characters.iter() {
         let character = character_assets.remove(handle).unwrap();
         let character_name = character.name.clone();
@@ -80,8 +91,8 @@ pub struct AudioAssets {
 
 #[derive(AssetCollection, Resource)]
 pub struct TextureAssets {
-    #[asset(path = "textures/bevy.png")]
-    pub texture_bevy: Handle<Image>,
+    #[asset(path = "textures/background.png")]
+    pub background: Handle<Image>,
 }
 
 #[derive(AssetCollection, Resource)]
