@@ -19,9 +19,9 @@ impl Plugin for ActionPlugin {
             .add_systems(Update, state.run_if(in_state(GameState::Playing)))
             // .add_systems(Update, movement.run_if(in_state(GameState::Playing)))
             .add_systems(Update, action.run_if(in_state(GameState::Playing)))
-            .add_systems(Update, damage.run_if(in_state(GameState::Playing)))
-            .add_systems(Update, hurtbox.run_if(in_state(GameState::Playing)))
-            .add_systems(Update, animation.run_if(in_state(GameState::Playing)));
+            .add_systems(Update, animation.run_if(in_state(GameState::Playing)))
+            .add_systems(Last, damage.run_if(in_state(GameState::Playing)))
+            .add_systems(Last, hurtbox.run_if(in_state(GameState::Playing)));
     }
 }
 

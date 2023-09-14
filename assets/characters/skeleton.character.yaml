@@ -233,20 +233,20 @@ actions:
           min: [ -10, -26.0 ]
           max: [ 7.0, 25.0 ]
   skyward :
-    duration: 0.3
-    repeat: false
-    external_impulse: [ 50.0, 80.0 ]
-    hit_action: float
+    duration: 0.3 #动画总时长
+    repeat: false #是否循环
+    external_impulse: [ 50.0, 80.0 ] #外部冲量 水平力，垂直力
+    hit_action: float #受击方动画效果
     atlas:
-      width: 150
-      height: 150
-      columns: 6
-      rows: 1
-      path: textures/skeleton/skyward.png
+      width: 150  #动画图片宽度
+      height: 150 #动画图片高度
+      columns: 6 #动画图片列数
+      rows: 1 #动画图片行数
+      path: textures/skeleton/skyward.png #动画图片路径
     frames:
-      - id: 1
-        stage: Startup
-        hurtbox:
+      - id: 1 #动画帧id
+        stage: Startup #动画帧阶段: 抬手 释放 恢复
+        hurtbox:  #受击盒
           min: [ -10, -26.0 ]
           max: [ 7.0, 25.0 ]
       - id: 2
@@ -266,12 +266,12 @@ actions:
           max: [ 7.0, 25.0 ]
       - id: 5
         stage: Startup
-        hurtbox:
-          min: [ -10, -26.0 ]
-          max: [ 7.0, 25.0 ]
-        hitbox:
-          min: [ 28.0, -26.0 ]
-          max: [ 68.0, 25.0 ]
+        hurtbox:  #受击盒
+          min: [ -10, -26.0 ] #受击盒左下角坐标
+          max: [ 7.0, 25.0 ] #受击盒右上角坐标
+        hitbox:  #攻击盒
+          min: [ 28.0, -26.0 ] #攻击盒左下角坐标
+          max: [ 68.0, 25.0 ] #攻击盒右上角坐标
       - id: 6
         stage: Startup
         hurtbox:
