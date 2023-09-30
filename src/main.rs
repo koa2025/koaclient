@@ -1,50 +1,70 @@
-// disable console on windows for release builds
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-
-use bevy::prelude::*;
-use bevy::window::PrimaryWindow;
-use bevy::winit::WinitWindows;
-use bevy::DefaultPlugins;
-use bevy_game::GamePlugin; // ToDo: Replace bevy_game with your new crate name.
-use std::io::Cursor;
-use winit::window::Icon;
+use bevy::{
+    render::{
+        camera::{Projection},
+    },
+    prelude::*,
+};
+use bevy::window::{WindowMode};
+use mia::{CustomMaterial, GameState, MainCamera, MyMaterials};
+use mia::plugins::{GamePlugin, InspectPlugin, LoadPlugin};
 
 fn main() {
     App::new()
-        .insert_resource(Msaa::Off)
-        .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                title: "Bevy game".to_string(), // ToDo
-                resolution: (960., 540.).into(),
-                // Bind to canvas included in `index.html`
-                canvas: Some("#bevy".to_owned()),
-                // Tells wasm not to override default event handling, like F5 and Ctrl+R
-                prevent_default_event_handling: false,
+        .add_plugins((
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    mode: WindowMode::BorderlessFullscreen,
+                    ..default()
+                }),
                 ..default()
-            }),
-            ..default()
-        }))
-        .add_plugins(GamePlugin)
-        .add_systems(Startup, set_window_icon)
+            }), MaterialPlugin::<CustomMaterial>::default()
+        ))
+        .add_plugins((
+            LoadPlugin,
+            InspectPlugin,
+            GamePlugin,
+        ))
+        .add_state::<GameState>()
+        .add_systems(Startup, setup)
         .run();
 }
 
-// Sets the icon on windows and X11
-fn set_window_icon(
-    windows: NonSend<WinitWindows>,
-    primary_window: Query<Entity, With<PrimaryWindow>>,
+
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<CustomMaterial>>,
 ) {
-    let primary_entity = primary_window.single();
-    let primary = windows.get_window(primary_entity).unwrap();
-    let icon_buf = Cursor::new(include_bytes!(
-        "../build/macos/AppIcon.iconset/icon_256x256.png"
-    ));
-    if let Ok(image) = image::load(icon_buf, image::ImageFormat::Png) {
-        let image = image.into_rgba8();
-        let (width, height) = image.dimensions();
-        let rgba = image.into_raw();
-        let icon = Icon::from_rgba(rgba, width, height).unwrap();
-        primary.set_window_icon(Some(icon));
-    };
+    // Calculate the camera position and direction to look at (0, 0, 0)
+
+    let camera_position = Vec3::new(0., 15., 34.); // Adjust as needed
+    let look_at_point = Vec3::ZERO;
+    let up_direction = Vec3::new(0.0, 1., 0.0); // Y-axis as up
+
+    // Create the camera with a 30-degree field of view
+    commands.spawn((Camera3dBundle {
+        transform: Transform::from_translation(camera_position)
+            .looking_at(look_at_point, up_direction),
+        projection: Projection::Perspective(PerspectiveProjection {
+            fov: f32::to_radians(30.0),
+            ..default()
+        }),
+        ..default()
+    }, MainCamera));
+
+
+
+    //
+    //
+    // commands.spawn(PbrBundle {
+    //     mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+    //     material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+    //     transform: Transform::from_xyz(0.0, 0.0, 0.0),
+    //     ..default()
+    // });
+
+
+
 }
+
+

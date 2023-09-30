@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::WindowMode;
-use bevy_game::GamePlugin;
+use mia::GamePlugin;
 
 #[bevy_main]
 fn main() {
