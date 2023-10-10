@@ -23,8 +23,11 @@ pub struct MyAssets {
     #[asset(path = "textures/background.png")]
     pub background: Handle<Image>,
 
-    #[asset(path = "models/fmj.gltf#Scene0")]
-    pub scene0: Handle<Scene>,
+    #[asset(path = "textures/tree.png")]
+    pub tree: Handle<Image>,
+
+    // #[asset(path = "models/fmj.gltf#Scene0")]
+    // pub scene0: Handle<Scene>,
 }
 
 #[derive(Resource)]

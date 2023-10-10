@@ -46,6 +46,8 @@ smallvec = "1.10"
 
 egui_dock = "0.6"
 egui-gizmo = "0.11"
+rand = "0.8.5"
+bevy_shader_utils = "0.5.2"
 
 # bevy_mod_picking = { git = "https://github.com/aevyrie/bevy_mod_picking", rev = "554649a951689dce66d0d759839b326874e8826f", default-features = false, features = ["backend_raycast", "backend_egui", "backend_sprite"] }
 # bevy_framepace = "0.11"
